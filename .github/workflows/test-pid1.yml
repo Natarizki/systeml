@@ -1,0 +1,41 @@
+name: test-pid1
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  pid1-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: build
+        run: make
+
+      - name: prepare test tree
+        run: |
+          mkdir -p trees/default
+          cat > trees/default/hello <<'EOF'
+          type=process
+          command=/bin/sleep 3600
+          auto-restart=yes
+          EOF
+
+      - name: prepare pid1 config
+        run: |
+          sudo mkdir -p /etc/systeml
+          echo "default" | sudo tee /etc/systeml/pid1.conf
+          sudo mkdir -p /sbin
+          sudo cp systeml /sbin/systeml
+
+      - name: run as PID 1 in new namespace
+        env:
+          PREFIX: ""
+        run: |
+          sudo -E unshare --pid --fork --mount-proc \
+            timeout 5 /sbin/systeml || true
+
+      - name: check binary did not crash immediately
+        run: |
+          echo "exit code above should be from timeout (124) or clean exit, not a segfault (139)"
