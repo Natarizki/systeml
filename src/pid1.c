@@ -23,7 +23,10 @@ static void pid1_init_paths(void) {
 typedef struct {
     char name[64];
     pid_t pid;
+    int restart_count;
 } tree_child_t;
+
+#define PID1_RESTART_LIMIT 5
 
 static tree_child_t g_children[MAX_TREES];
 static int g_nchildren = 0;
@@ -76,8 +79,17 @@ static void reap_all(void) {
         int known = 0;
         for (int i = 0; i < g_nchildren; i++) {
             if (g_children[i].pid == pid) {
-                fprintf(stderr, "systeml(pid1): tree '%s' (pid %d) exited, restarting\n",
-                        g_children[i].name, pid);
+                g_children[i].restart_count++;
+                if (g_children[i].restart_count > PID1_RESTART_LIMIT) {
+                    fprintf(stderr, "systeml(pid1): tree '%s' failed too many times, giving up\n",
+                            g_children[i].name);
+                    g_children[i].pid = -1;
+                    known = 1;
+                    break;
+                }
+
+                fprintf(stderr, "systeml(pid1): tree '%s' (pid %d) exited, restarting (attempt %d)\n",
+                        g_children[i].name, pid, g_children[i].restart_count);
                 pid_t newpid = fork();
                 if (newpid == 0) {
                     execl(SYSTEML_BIN, SYSTEML_BIN, g_children[i].name, (char *)NULL);

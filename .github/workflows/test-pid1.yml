@@ -15,8 +15,8 @@ jobs:
 
       - name: prepare test tree
         run: |
-          mkdir -p trees/default
-          cat > trees/default/hello <<'EOF'
+          mkdir -p $HOME/systeml/trees/default
+          cat > $HOME/systeml/trees/default/hello <<'EOF'
           type=process
           command=/bin/sleep 3600
           auto-restart=yes
