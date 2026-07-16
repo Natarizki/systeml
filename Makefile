@@ -1,5 +1,5 @@
 CC      = cc
-CFLAGS  = -Wall -Wextra -O2 -std=c11
+CFLAGS  = -Wall -Wextra -O2 -std=gnu11
 SRC     = src/main.c src/service.c src/spawn.c src/pid1.c src/control.c
 OBJ     = $(SRC:.c=.o)
 BIN     = systeml
