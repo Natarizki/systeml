@@ -62,6 +62,9 @@ Services with `auto-restart=yes` are restarted automatically on exit, up to 5 ti
 
 ## License
 
-GPL v3
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
+or
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
