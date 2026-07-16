@@ -33,8 +33,11 @@ jobs:
         env:
           PREFIX: ""
         run: |
-          sudo -E unshare --pid --fork --mount-proc \
-            timeout 5 /sbin/systeml || true
+          sudo -E unshare --pid --fork --mount-proc /sbin/systeml &
+          RUNPID=$!
+          sleep 5
+          sudo kill -TERM $RUNPID 2>/dev/null || true
+          wait $RUNPID || true
 
       - name: check binary did not crash immediately
         run: |
