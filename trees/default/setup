@@ -1,0 +1,2 @@
+type=scripted
+command=/data/data/com.termux/files/home/systeml/scripts/setup.sh

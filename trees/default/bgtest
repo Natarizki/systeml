@@ -1,0 +1,3 @@
+type=bgprocess
+command=/data/data/com.termux/files/home/systeml/scripts/bgtest.sh
+pidfile=/data/data/com.termux/files/usr/tmp/bgtest.pid
