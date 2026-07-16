@@ -39,19 +39,23 @@ Produces two binaries: `systeml` (the daemon) and `systemlctl` (the control clie
 ## Usage
 
 Run a tree as a standalone supervisor:
-
+```bash
 ./systeml
-Control a running tree:
+```
+**Control a running tree:**
+```bash
 ./systemlctl  status
 ./systemlctl  start 
 ./systemlctl  stop 
 ./systemlctl  restart 
-Manage which trees PID 1 spawns at boot:
+```
+**Manage which trees PID 1 spawns at boot:**
+```bash
 ./systemlctl tree list
 ./systemlctl tree enable 
 ./systemlctl tree disable 
 ./systemlctl tree switch 
-
+```
 ## Restart behavior
 
 Services with `auto-restart=yes` are restarted automatically on exit, up to 5 times within a 60-second window. Beyond that, the service is marked `failed` and left stopped to avoid restart storms.
